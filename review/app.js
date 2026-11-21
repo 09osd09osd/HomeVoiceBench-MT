@@ -35,10 +35,9 @@ function renderList() {
 }
 
 function renderObjective(c) {
-  const first = c.turns[0] && c.turns[0].systems;
-  if (!first) return "";
+  const objs = c.objective || {};
   const rows = Object.keys(SHORT).map((s) => {
-    const o = (first[s] || {}).objective;
+    const o = objs[s];
     if (!o) return "";
     const t = o.tool || {}, pr = o.probe || {};
     const f1 = t.field_f1 != null ? t.field_f1 : "-";
