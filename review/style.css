@@ -34,3 +34,7 @@ audio{width:100%;height:30px;margin-top:4px}
 .notes{background:#fff;border:1px solid var(--line);border-radius:8px;padding:12px;margin-top:18px}
 .notes textarea{width:100%;min-height:70px;margin-top:6px;padding:8px;border:1px solid var(--line);border-radius:6px;font:inherit}
 .flags{display:flex;gap:16px;margin-top:8px;flex-wrap:wrap}
+
+.checkpoint{display:inline-block;background:#e8f1fb;color:#3b6ea5;border-radius:10px;padding:1px 8px;font-size:11px;font-weight:600;margin-left:6px}
+.checkpoint.gray{background:#eef1f4;color:#6b7785}
+

@@ -70,13 +70,19 @@ function renderCase() {
       const viol = (d.violations || []).length ? `<div class="viol">违规：${esc((d.violations || []).map((v) => v.type || JSON.stringify(v)).join("; "))}</div>` : "";
       const src = audioSrc(d.audio);
       const audio = src ? `<audio controls preload="none" src="${esc(src)}"></audio>` : '<div class="muted">无样例音频（完整音频见本地包）</div>';
-      return `<div class="sys"><div class="sysname"><span>${SHORT[s]}</span><span class="score">${a == null ? "NA" : a.toFixed(2)}</span></div>
-        <div class="dims">${dims}</div><div class="answer">${esc(d.text || "（未判/无回答）")}</div>
+      const score = t.checkpoint ? (a == null ? "NA" : a.toFixed(2)) : "—";
+      const judgeTag = t.checkpoint
+        ? (d.scores ? "" : '<div class="muted">未判（无音频或模型失败）</div>')
+        : '<div class="muted">非检查点，不评分（仅保留上下文）</div>';
+      const answer = d.text ? esc(d.text) : "（无回答文本）";
+      return `<div class="sys"><div class="sysname"><span>${SHORT[s]}</span><span class="score">${score}</span></div>
+        <div class="dims">${dims}</div><div class="answer">${answer}</div>${judgeTag}
         ${d.note ? `<div class="note">判官理由：${esc(d.note)}</div>` : ""}${viol}${audio}</div>`;
     }).join("");
     const exp = t.tool_expect ? `<div class="expect">期望工具：${esc(JSON.stringify(t.tool_expect))}</div>` : "";
     const probe = t.probe ? `<div class="expect">探针标准答案：${esc(JSON.stringify(t.probe.expected || []))}</div>` : "";
-    return `<div class="turn"><div class="user">R${t.turn} 用户：${esc(t.user)}</div>${exp}${probe}<div class="systems">${rows}</div></div>`;
+    const badge = t.checkpoint ? '<span class="checkpoint">检查点·评分</span>' : '<span class="checkpoint gray">非检查点·仅上下文</span>';
+    return `<div class="turn"><div class="user">R${t.turn} 用户：${esc(t.user)} ${badge}</div>${exp}${probe}<div class="systems">${rows}</div></div>`;
   }).join("");
 }
 
